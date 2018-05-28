@@ -1,0 +1,14 @@
+entities\Customer_.class
+entities\Customer.class
+rest\ReservationFacadeREST.class
+rest\AbstractFacade.class
+rest\CarFacadeREST.class
+entities\Emergency_.class
+entities\Emergency.class
+entities\Reservation.class
+entities\Reservation_.class
+rest\ApplicationConfig.class
+entities\Car_.class
+rest\CustomerFacadeREST.class
+rest\EmergencyFacadeREST.class
+entities\Car.class
