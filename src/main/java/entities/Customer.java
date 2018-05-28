@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Customer.findBySurname", query = "SELECT c FROM Customer c WHERE c.surname = :surname")
     , @NamedQuery(name = "Customer.findByMail", query = "SELECT c FROM Customer c WHERE c.mail = :mail")
     , @NamedQuery(name = "Customer.findByPassword", query = "SELECT c FROM Customer c WHERE c.password = :password")
+    , @NamedQuery(name = "Customer.findByLoginKey", query = "SELECT c FROM Customer c WHERE c.loginKey = :loginKey")
     , @NamedQuery(name = "Customer.findByLastUpdate", query = "SELECT c FROM Customer c WHERE c.lastUpdate = :lastUpdate")})
 public class Customer implements Serializable {
 
@@ -69,6 +70,9 @@ public class Customer implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "PASSWORD")
     private String password;
+    @Size(max = 45)
+    @Column(name = "LOGIN_KEY")
+    private String loginKey;
     @Column(name = "LAST_UPDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
@@ -128,6 +132,14 @@ public class Customer implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getLoginKey() {
+        return loginKey;
+    }
+
+    public void setLoginKey(String loginKey) {
+        this.loginKey = loginKey;
     }
 
     public Date getLastUpdate() {

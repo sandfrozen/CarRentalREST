@@ -33,6 +33,7 @@ public class ApplicationConfig extends Application {
         resources.add(entities.rest.CustomerFacadeREST.class);
         resources.add(entities.rest.EmergencyFacadeREST.class);
         resources.add(entities.rest.ReservationFacadeREST.class);
+        resources.add(filters.Logger.class);
     }
     
 }

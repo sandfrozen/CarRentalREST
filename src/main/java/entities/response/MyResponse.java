@@ -18,8 +18,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @XmlTransient
 @XmlAccessorType(XmlAccessType.NONE)
-public class Response {
-
+public class MyResponse {
     
     @XmlElement(name = "status")
     private String status = "ok";
@@ -31,9 +30,20 @@ public class Response {
     public void setStatus(String status) {
         this.status = status;
     }
+    
+    @XmlElement(name = "errorMessage")
+    private String errorMessage;
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 
     @XmlElement(name = "totalResults")
-    int totalResults = 0;
+    private int totalResults = 0;
 
     public int getTotalResults() {
         return totalResults;

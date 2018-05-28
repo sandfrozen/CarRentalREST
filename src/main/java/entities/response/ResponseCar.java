@@ -12,9 +12,9 @@ import javax.xml.bind.annotation.XmlElement;
  *
  * @author tomek.buslowski
  */
-public class ResponseCar extends Response {
+public class ResponseCar extends MyResponse {
 
-    @XmlElement(name = "Car")
+    @XmlElement(name = "car")
     private Car car;
 
     public Car getCar() {
@@ -22,12 +22,8 @@ public class ResponseCar extends Response {
     }
 
     public void setCar(Car car) {
-        if ( car != null ) {
-            this.car = car;
-            this.totalResults = 1;
-        } else {
-            this.setStatus("error");
-            this.totalResults = 0;
-        } 
+        this.car = car;
+        this.setTotalResults(car != null ? 1 : 0);
     }
+
 }
