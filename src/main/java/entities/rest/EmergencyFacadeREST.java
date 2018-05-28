@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rest;
+package entities.rest;
 
-import entities.Car;
+import entities.Emergency;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,27 +25,27 @@ import javax.ws.rs.core.MediaType;
  * @author tomek.buslowski
  */
 @Stateless
-@Path("cars")
-public class CarFacadeREST extends AbstractFacade<Car> {
+@Path("emergencies")
+public class EmergencyFacadeREST extends AbstractFacade<Emergency> {
 
     @PersistenceContext(unitName = "com.carrental_CarRentalREST_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    public CarFacadeREST() {
-        super(Car.class);
+    public EmergencyFacadeREST() {
+        super(Emergency.class);
     }
 
     @POST
     @Override
     @Consumes(MediaType.APPLICATION_JSON)
-    public void create(Car entity) {
+    public void create(Emergency entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void edit(@PathParam("id") Integer id, Car entity) {
+    public void edit(@PathParam("id") Integer id, Emergency entity) {
         super.edit(entity);
     }
 
@@ -58,21 +58,21 @@ public class CarFacadeREST extends AbstractFacade<Car> {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Car find(@PathParam("id") Integer id) {
+    public Emergency find(@PathParam("id") Integer id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Car> findAll() {
+    public List<Emergency> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Car> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Emergency> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 

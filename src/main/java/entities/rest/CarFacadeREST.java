@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rest;
+package entities.rest;
 
-import entities.Reservation;
+import entities.Car;
+import entities.response.ResponseCar;
+import entities.response.ResponseCars;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,27 +27,56 @@ import javax.ws.rs.core.MediaType;
  * @author tomek.buslowski
  */
 @Stateless
-@Path("reservations")
-public class ReservationFacadeREST extends AbstractFacade<Reservation> {
+@Path("cars")
+public class CarFacadeREST extends AbstractFacade<Car> {
 
     @PersistenceContext(unitName = "com.carrental_CarRentalREST_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    public ReservationFacadeREST() {
-        super(Reservation.class);
+    public CarFacadeREST() {
+        super(Car.class);
     }
+    
+    // <editor-fold desc="GET /cars">
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResponseCars findAllCars() {
+        ResponseCars responseCars = new ResponseCars();
+        responseCars.setList(this.findAll());
+        return responseCars;
+    }
+    
+    @Override
+    public List<Car> findAll() {
+        return super.findAll();
+    }
+    // </editor-fold>
 
+    // <editor-fold desc="GET /cars/1">
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResponseCar findCar(@PathParam("id") Integer id) {
+        ResponseCar responseCar = new ResponseCar();
+        responseCar.setCar(this.find(id));
+        return responseCar;
+    }
+    public Car find(Integer id) {
+        return super.find(id);
+    }
+    // </editor-fold>
+    
     @POST
     @Override
     @Consumes(MediaType.APPLICATION_JSON)
-    public void create(Reservation entity) {
+    public void create(Car entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void edit(@PathParam("id") Integer id, Reservation entity) {
+    public void edit(@PathParam("id") Integer id, Car entity) {
         super.edit(entity);
     }
 
@@ -56,23 +87,9 @@ public class ReservationFacadeREST extends AbstractFacade<Reservation> {
     }
 
     @GET
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Reservation find(@PathParam("id") Integer id) {
-        return super.find(id);
-    }
-
-    @GET
-    @Override
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Reservation> findAll() {
-        return super.findAll();
-    }
-
-    @GET
     @Path("{from}/{to}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Reservation> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Car> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 

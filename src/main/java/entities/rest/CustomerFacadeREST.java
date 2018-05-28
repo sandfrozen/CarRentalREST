@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rest;
+package entities.rest;
 
 import entities.Customer;
 import java.util.List;
