@@ -5,12 +5,14 @@ exceptions\NotFoundException.class
 filters\Logger.class
 entities\rest\ApplicationConfig.class
 entities\rest\AbstractFacade.class
+entities\response\ResponseCustomers.class
 entities\rest\CarFacadeREST.class
 entities\rest\CustomerFacadeREST.class
 entities\Emergency_.class
 entities\Emergency.class
 entities\rest\ReservationFacadeREST.class
 entities\Reservation.class
+entities\response\ResponseCustomer.class
 entities\response\ResponseCar.class
 entities\Reservation_.class
 entities\Car_.class

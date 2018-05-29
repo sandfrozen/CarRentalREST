@@ -10,6 +10,7 @@ import entities.response.ResponseCar;
 import entities.response.ResponseCars;
 import exceptions.NotFoundException;
 import java.net.URI;
+import java.sql.Timestamp;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -46,7 +47,7 @@ public class CarFacadeREST extends AbstractFacade<Car> {
     // <editor-fold desc="GET /cars" defaultstate="collapsed">
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findAllCars() {
+    public Response findAllRest() {
         ResponseCars responseCars = new ResponseCars();
         try {
             responseCars.setList(this.findAll());
@@ -70,36 +71,11 @@ public class CarFacadeREST extends AbstractFacade<Car> {
         return super.findAll();
     }
     // </editor-fold>
-    // <editor-fold desc="GET /cars/1/reservations" defaultstate="collapsed">
-    @GET
-    @Path("{id}/reservations")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response findAllReservationsForCar(@PathParam("id") Integer id) {
-        ResponseCars responseCars = new ResponseCars();
-        try {
-//            ReservationFacadeREST r = new ReservationFacadeREST();
-//            r.
-            responseCars.setList(this.findAll());
-            if (responseCars.getList() == null) {
-                throw new NotFoundException("cars");
-            }
-        } catch (Exception e) {
-            responseCars.setList(null);
-            responseCars.setStatus("error");
-            responseCars.setErrorMessage(e.toString());
-        }
-
-        Response.Status status = responseCars.getStatus() == "ok" ? Response.Status.OK : Response.Status.NOT_FOUND;
-        Response response = Response.status(status).entity(responseCars).build();
-
-        return response;
-    }
-    // </editor-fold>
     // <editor-fold desc="GET /cars/1" defaultstate="collapsed">
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findCar(@PathParam("id") Integer id) {
+    public Response findRest(@PathParam("id") Integer id) {
         ResponseCar responseCar = new ResponseCar();
 
         try {
@@ -126,7 +102,7 @@ public class CarFacadeREST extends AbstractFacade<Car> {
     // <editor-fold desc="POST /cars">
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createCar(Car car, @Context UriInfo uriInfo) {
+    public Response createRest(Car car, @Context UriInfo uriInfo) {
         Response response;
         try {
             this.create(car);
@@ -152,13 +128,16 @@ public class CarFacadeREST extends AbstractFacade<Car> {
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response editCar(@PathParam("id") Integer id, Car car, @Context UriInfo uriInfo) {
+    public Response editRest(@PathParam("id") Integer id, Car car, @Context UriInfo uriInfo) {
         Response response;
         try {
+            car.setId(id);
+            car.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+            
             this.edit(car);
             URI uri = uriInfo.getAbsolutePathBuilder().build();
+            
             response = Response.created(uri).build();
-
         } catch (Exception e) {
             response = Response.status(Response.Status.BAD_REQUEST).build();
             response.getHeaders().add("error", e.toString());
@@ -175,7 +154,7 @@ public class CarFacadeREST extends AbstractFacade<Car> {
     // <editor-fold desc="DELETE /cars/1">
     @DELETE
     @Path("{id}")
-    public Response removeCar(@PathParam("id") Integer id) {
+    public Response removeRest(@PathParam("id") Integer id) {
         Response response;
         try {
             this.remove(id);

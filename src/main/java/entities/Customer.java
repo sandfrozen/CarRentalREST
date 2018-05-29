@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -183,5 +184,14 @@ public class Customer implements Serializable {
     public String toString() {
         return "entities.Customer[ id=" + id + " ]";
     }
+    
+//    public void merge(Customer newc) {
+//        // doesn't modifies id and login_key
+//        this.mail = newc.getMail()!= null ? newc.getMail(): this.mail;
+//        this.name = newc.getName()!= null ? newc.getName(): this.name;
+//        this.surname = newc.getSurname()!= null ? newc.getSurname(): this.surname;
+//        this.password = newc.getPassword()!= null ? newc.getPassword(): this.password;
+//        this.lastUpdate = new Timestamp(System.currentTimeMillis());
+//    }
     
 }

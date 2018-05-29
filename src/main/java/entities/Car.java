@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -266,4 +267,15 @@ public class Car implements Serializable {
         return "entities.Car[ id=" + id + " ]";
     }
     
+//    public void merge(Car newc) {
+//        // doesn't modifies id and login_key
+//        this.brand = newc.brand != null ? newc.brand : this.brand;
+//        this.model = newc.model != null ? newc.model : this.model;
+//        this.doors = newc.doors > 0 ? newc.doors : this.doors;
+//        this.fuelcap = newc.fuelcap > 0 ? newc.fuelcap : this.fuelcap;
+//        this.fueltype = newc.fueltype != null ? newc.fueltype : this.fueltype;
+//        this.range = newc.range > 0 ? newc.range : this.range;
+//        this.gearbox = newc.fueltype != null ? newc.fueltype : this.fueltype;
+//        this.lastUpdate = new Timestamp(System.currentTimeMillis());
+//    }
 }
