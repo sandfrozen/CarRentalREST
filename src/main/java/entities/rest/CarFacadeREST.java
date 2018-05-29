@@ -69,7 +69,31 @@ public class CarFacadeREST extends AbstractFacade<Car> {
     public List<Car> findAll() {
         return super.findAll();
     }
+    // </editor-fold>
+    // <editor-fold desc="GET /cars/1/reservations" defaultstate="collapsed">
+    @GET
+    @Path("{id}/reservations")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findAllReservationsForCar(@PathParam("id") Integer id) {
+        ResponseCars responseCars = new ResponseCars();
+        try {
+//            ReservationFacadeREST r = new ReservationFacadeREST();
+//            r.
+            responseCars.setList(this.findAll());
+            if (responseCars.getList() == null) {
+                throw new NotFoundException("cars");
+            }
+        } catch (Exception e) {
+            responseCars.setList(null);
+            responseCars.setStatus("error");
+            responseCars.setErrorMessage(e.toString());
+        }
 
+        Response.Status status = responseCars.getStatus() == "ok" ? Response.Status.OK : Response.Status.NOT_FOUND;
+        Response response = Response.status(status).entity(responseCars).build();
+
+        return response;
+    }
     // </editor-fold>
     // <editor-fold desc="GET /cars/1" defaultstate="collapsed">
     @GET
@@ -102,24 +126,17 @@ public class CarFacadeREST extends AbstractFacade<Car> {
     // <editor-fold desc="POST /cars">
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response createCar(Car car, @Context UriInfo uriInfo) {
-        ResponseCar responseCar = new ResponseCar();
         Response response;
         try {
             this.create(car);
             List<Car> cars = this.findAll();
-            Car newCar = cars.get(cars.size()-1);
-            Integer newCarId = newCar.getId();
-
-            URI uri = uriInfo.getAbsolutePathBuilder().path(newCarId.toString()).build();
+            URI uri = uriInfo.getAbsolutePathBuilder().path(cars.get(cars.size() - 1).getId().toString()).build();
             response = Response.created(uri).build();
-            
+
         } catch (Exception e) {
-            responseCar.setCar(null);
-            responseCar.setStatus("error");
-            responseCar.setErrorMessage(e.toString());
-            response = Response.status(Response.Status.BAD_REQUEST).entity(responseCar).build();
+            response = Response.status(Response.Status.BAD_REQUEST).build();
+            response.getHeaders().add("error", e.toString());
         }
 
         return response;
@@ -131,32 +148,51 @@ public class CarFacadeREST extends AbstractFacade<Car> {
     }
 
     // </editor-fold>
+    // <editor-fold desc="PUT /cars/1">
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void edit(@PathParam("id") Integer id, Car entity) {
+    public Response editCar(@PathParam("id") Integer id, Car car, @Context UriInfo uriInfo) {
+        Response response;
+        try {
+            this.edit(car);
+            URI uri = uriInfo.getAbsolutePathBuilder().build();
+            response = Response.created(uri).build();
+
+        } catch (Exception e) {
+            response = Response.status(Response.Status.BAD_REQUEST).build();
+            response.getHeaders().add("error", e.toString());
+        }
+
+        return response;
+    }
+
+    public void edit(Car entity) {
         super.edit(entity);
     }
 
+    // </editor-fold>
+    // <editor-fold desc="DELETE /cars/1">
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
+    public Response removeCar(@PathParam("id") Integer id) {
+        Response response;
+        try {
+            this.remove(id);
+            response = Response.noContent().build();
+
+        } catch (Exception e) {
+            response = Response.status(Response.Status.BAD_REQUEST).build();
+            response.getHeaders().add("error", e.toString());
+        }
+
+        return response;
+    }
+    
+    public void remove(Integer id) {
         super.remove(super.find(id));
     }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Car> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
+    // </editor-fold>
 
     @Override
     protected EntityManager getEntityManager() {
