@@ -103,7 +103,7 @@ public class CarFacadeREST extends AbstractFacade<Car> {
     }
 
     // </editor-fold>
-    
+    // <editor-fold desc="GET /cars/1/reservations" defaultstate="collapsed">
     @GET
     @Path("{id}/reservations")
     @Produces(MediaType.APPLICATION_JSON)
@@ -125,8 +125,8 @@ public class CarFacadeREST extends AbstractFacade<Car> {
         Response.Status status = response.getStatus() == "ok" ? Response.Status.OK : Response.Status.NOT_FOUND;
         return Response.status(status).entity(response).build();
     }
-    
-    // <editor-fold desc="POST /cars">
+    // </editor-fold>
+    // <editor-fold desc="POST /cars" defaultstate="collapsed">
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createRest(Car car, @Context UriInfo uriInfo) {
@@ -151,7 +151,7 @@ public class CarFacadeREST extends AbstractFacade<Car> {
     }
 
     // </editor-fold>
-    // <editor-fold desc="PUT /cars/1">
+    // <editor-fold desc="PUT /cars/1" defaultstate="collapsed">
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -178,7 +178,7 @@ public class CarFacadeREST extends AbstractFacade<Car> {
     }
 
     // </editor-fold>
-    // <editor-fold desc="DELETE /cars/1">
+    // <editor-fold desc="DELETE /cars/1" defaultstate="collapsed">
     @DELETE
     @Path("{id}")
     public Response removeRest(@PathParam("id") Integer id) {

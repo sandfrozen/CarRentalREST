@@ -101,8 +101,8 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
         return super.find(id);
     }
 
-    // </editor-fold>
-    
+    // </editor-fold>  
+    // <editor-fold desc="GET /customers/1/reservations" defaultstate="collapsed">
     @GET
     @Path("{id}/reservations")
     @Produces(MediaType.APPLICATION_JSON)
@@ -124,8 +124,8 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
         Response.Status status = response.getStatus() == "ok" ? Response.Status.OK : Response.Status.NOT_FOUND;
         return Response.status(status).entity(response).build();
     }
-    
-    // <editor-fold desc="POST /customers">
+    // </editor-fold>  
+    // <editor-fold desc="POST /customers" defaultstate="collapsed">
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createRest(Customer customer, @Context UriInfo uriInfo) {
@@ -150,7 +150,7 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
     }
 
     // </editor-fold>
-    // <editor-fold desc="PUT /customers/1">
+    // <editor-fold desc="PUT /customers/1" defaultstate="collapsed">
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -180,7 +180,7 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
     }
 
     // </editor-fold>
-    // <editor-fold desc="DELETE /customers/1">
+    // <editor-fold desc="DELETE /customers/1" defaultstate="collapsed">
     @DELETE
     @Path("{id}")
     public Response removeRest(@PathParam("id") Integer id) {

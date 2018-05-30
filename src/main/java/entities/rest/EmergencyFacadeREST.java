@@ -100,37 +100,7 @@ public class EmergencyFacadeREST extends AbstractFacade<Emergency> {
     }
 
     // </editor-fold>
-    @GET
-    @Path("forReservation/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response findEmergenciesRest(@PathParam("id") Integer id) {
-        ResponseEmergencies response = new ResponseEmergencies();
-        try {
-            if( this.em.find(Reservation.class, id) == null ){
-                throw new NotFoundException("reservation");
-            }
-            response.setList(this.findAll());
-            List<Emergency> filtered = new ArrayList<Emergency>();
-            for (Emergency e : response.getList()) {
-                if( e.getReservation().getId().equals(id) ) {
-                    filtered.add(e);
-                }
-            }
-            response.setList(filtered);
-            if (response.getList() == null) {
-                throw new NotFoundException("emergencies");
-            }
-        } catch (Exception e) {
-            response.setList(null);
-            response.setStatus("error");
-            response.setErrorMessage(e.toString());
-        }
-
-        Response.Status status = response.getStatus() == "ok" ? Response.Status.OK : Response.Status.NOT_FOUND;
-        return Response.status(status).entity(response).build();
-    }
-
-    // <editor-fold desc="POST /reservations">
+    // <editor-fold desc="POST /reservations" defaultstate="collapsed">
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createRest(Emergency emergency, @Context UriInfo uriInfo) {
@@ -140,7 +110,7 @@ public class EmergencyFacadeREST extends AbstractFacade<Emergency> {
             System.out.println("------- resId: " + resId);
             Reservation res = this.getEntityManager().find(Reservation.class, resId);
             if (res == null) {
-                throw new NotFoundException("reservation id=" + resId);
+                throw new NotFoundException("reservation", resId);
             }
             
             emergency.setActual(Boolean.TRUE);
@@ -165,7 +135,7 @@ public class EmergencyFacadeREST extends AbstractFacade<Emergency> {
     }
 
     // </editor-fold>
-    // <editor-fold desc="PUT /reservations/1">
+    // <editor-fold desc="PUT /reservations/1" defaultstate="collapsed">
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -192,7 +162,7 @@ public class EmergencyFacadeREST extends AbstractFacade<Emergency> {
     }
 
     // </editor-fold>
-    // <editor-fold desc="DELETE /reservations/1">
+    // <editor-fold desc="DELETE /reservations/1" defaultstate="collapsed">
     @DELETE
     @Path("{id}")
     public Response removeRest(@PathParam("id") Integer id) {

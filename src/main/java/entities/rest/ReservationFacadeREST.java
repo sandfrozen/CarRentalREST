@@ -104,7 +104,7 @@ public class ReservationFacadeREST extends AbstractFacade<Reservation> {
     }
 
     // </editor-fold>
-    
+    // <editor-fold desc="GET /reservations/1/emergencies" defaultstate="collapsed">
     @GET
     @Path("{id}/emergencies")
     @Produces(MediaType.APPLICATION_JSON)
@@ -125,8 +125,8 @@ public class ReservationFacadeREST extends AbstractFacade<Reservation> {
         Response.Status status = response.getStatus() == "ok" ? Response.Status.OK : Response.Status.NOT_FOUND;
         return Response.status(status).entity(response).build();
     }
-    
-    // <editor-fold desc="POST /reservations">
+    // </editor-fold>
+    // <editor-fold desc="POST /reservations" defaultstate="collapsed">
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createRest(Reservation reservation, @Context UriInfo uriInfo) {
@@ -162,7 +162,7 @@ public class ReservationFacadeREST extends AbstractFacade<Reservation> {
     }
 
     // </editor-fold>
-    // <editor-fold desc="PUT /reservations/1">
+    // <editor-fold desc="PUT /reservations/1" defaultstate="collapsed">
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -189,7 +189,7 @@ public class ReservationFacadeREST extends AbstractFacade<Reservation> {
     }
 
     // </editor-fold>
-    // <editor-fold desc="DELETE /reservations/1">
+    // <editor-fold desc="DELETE /reservations/1" defaultstate="collapsed">
     @DELETE
     @Path("{id}")
     public Response removeRest(@PathParam("id") Integer id) {
