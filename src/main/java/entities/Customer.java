@@ -46,39 +46,47 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "NAME")
     private String name;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "SURNAME")
     private String surname;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "MAIL")
     private String mail;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "PASSWORD")
     private String password;
+    
     @Size(max = 45)
     @Column(name = "LOGIN_KEY")
     private String loginKey;
+    
     @Column(name = "LAST_UPDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
-    private Collection<Reservation> reservationCollection;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    private Collection<Reservation> reservations;
 
     public Customer() {
     }
@@ -152,12 +160,12 @@ public class Customer implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Reservation> getReservationCollection() {
-        return reservationCollection;
+    public Collection<Reservation> getReservations() {
+        return reservations;
     }
 
-    public void setReservationCollection(Collection<Reservation> reservationCollection) {
-        this.reservationCollection = reservationCollection;
+    public void setReservations(Collection<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     @Override

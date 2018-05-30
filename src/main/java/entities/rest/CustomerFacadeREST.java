@@ -6,11 +6,15 @@
 package entities.rest;
 
 import entities.Customer;
+import entities.Reservation;
 import entities.response.ResponseCustomer;
 import entities.response.ResponseCustomers;
+import entities.response.ResponseReservations;
 import exceptions.NotFoundException;
 import java.net.URI;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -98,6 +102,29 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
     }
 
     // </editor-fold>
+    
+    @GET
+    @Path("{id}/reservations")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findReservationsRest(@PathParam("id") Integer id) {
+        ResponseReservations response = new ResponseReservations();
+        
+        Collection<Reservation> reservations = this.find(id).getReservations();
+        try {
+            response.setList(new ArrayList<Reservation>(reservations));
+            if (response.getList() == null) {
+                throw new NotFoundException("customer", id);
+            }
+        } catch (Exception e) {
+            response.setList(null);
+            response.setStatus("error");
+            response.setErrorMessage(e.toString());
+        }
+
+        Response.Status status = response.getStatus() == "ok" ? Response.Status.OK : Response.Status.NOT_FOUND;
+        return Response.status(status).entity(response).build();
+    }
+    
     // <editor-fold desc="POST /customers">
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

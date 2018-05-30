@@ -20,9 +20,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -43,37 +46,46 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Emergency implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "LAT")
     private double lat;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "LON")
     private double lon;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "MESSAGE")
     private String message;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "ACTUAL")
     private Boolean actual;
+    
     @Column(name = "REPORTED")
     @Temporal(TemporalType.TIMESTAMP)
     private Date reported;
+    
     @Column(name = "LAST_UPDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
+    
     @JoinColumn(name = "RESERVATION_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Reservation reservationId;
+    @XmlElement(name="reservation")
+    private Reservation reservation;
 
     public Emergency() {
     }
@@ -146,12 +158,13 @@ public class Emergency implements Serializable {
         this.lastUpdate = lastUpdate;
     }
 
-    public Reservation getReservationId() {
-        return reservationId;
+    @XmlTransient
+    public Reservation getReservation() {
+        return reservation;
     }
-
-    public void setReservationId(Reservation reservationId) {
-        this.reservationId = reservationId;
+    
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 
     @Override

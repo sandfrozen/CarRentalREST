@@ -11,7 +11,11 @@ C:\Users\tomek.buslowski\Documents\NetBeansProjects\CarRentalREST\src\main\java\
 C:\Users\tomek.buslowski\Documents\NetBeansProjects\CarRentalREST\src\main\java\entities\rest\CarFacadeREST.java
 C:\Users\tomek.buslowski\Documents\NetBeansProjects\CarRentalREST\src\main\java\entities\Car.java
 C:\Users\tomek.buslowski\Documents\NetBeansProjects\CarRentalREST\src\main\java\entities\response\ResponseCustomers.java
+C:\Users\tomek.buslowski\Documents\NetBeansProjects\CarRentalREST\src\main\java\entities\response\ResponseEmergency.java
 C:\Users\tomek.buslowski\Documents\NetBeansProjects\CarRentalREST\src\main\java\exceptions\NotFoundException.java
+C:\Users\tomek.buslowski\Documents\NetBeansProjects\CarRentalREST\src\main\java\entities\response\ResponseEmergencies.java
 C:\Users\tomek.buslowski\Documents\NetBeansProjects\CarRentalREST\src\main\java\entities\rest\AbstractFacade.java
 C:\Users\tomek.buslowski\Documents\NetBeansProjects\CarRentalREST\src\main\java\entities\rest\ReservationFacadeREST.java
 C:\Users\tomek.buslowski\Documents\NetBeansProjects\CarRentalREST\src\main\java\entities\response\ResponseCustomer.java
+C:\Users\tomek.buslowski\Documents\NetBeansProjects\CarRentalREST\src\main\java\entities\response\ResponseReservation.java
+C:\Users\tomek.buslowski\Documents\NetBeansProjects\CarRentalREST\src\main\java\entities\response\ResponseReservations.java

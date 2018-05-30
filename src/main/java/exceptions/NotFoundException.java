@@ -12,9 +12,13 @@ package exceptions;
 public class NotFoundException extends Exception {
 
     private String info;
-    
+
     public NotFoundException(String info) {
         this.info = info + " not found";
+    }
+
+    public NotFoundException(String info, Integer id) {
+        this.info = info + " id=" + id + " not found";
     }
 
     @Override

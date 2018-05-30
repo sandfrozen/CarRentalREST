@@ -25,6 +25,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -52,29 +53,35 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Car implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "BRAND")
     private String brand;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "MODEL")
     private String model;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "DOORS")
     private int doors;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "FUELCAP")
     private int fuelcap;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -84,30 +91,37 @@ public class Car implements Serializable {
     @NotNull
     @Column(name = "RANGE")
     private int range;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "GEARBOX")
     private String gearbox;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "GEARS")
     private int gears;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "DAYCOST")
     private double daycost;
+    
     @Size(max = 255)
     @Column(name = "IMAGEURL")
     private String imageurl;
+    
     @Lob
     @Column(name = "PHOTO")
     private Serializable photo;
+    
     @Column(name = "LAST_UPDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "carId")
-    private Collection<Reservation> reservationCollection;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "car")
+    private Collection<Reservation> reservations;
 
     public Car() {
     }
@@ -234,12 +248,12 @@ public class Car implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Reservation> getReservationCollection() {
-        return reservationCollection;
+    public Collection<Reservation> getReservations() {
+        return reservations;
     }
 
-    public void setReservationCollection(Collection<Reservation> reservationCollection) {
-        this.reservationCollection = reservationCollection;
+    public void setReservations(Collection<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     @Override
