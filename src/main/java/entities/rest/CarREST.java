@@ -5,6 +5,7 @@
  */
 package entities.rest;
 
+import entities.facade.*;
 import entities.Car;
 import entities.Reservation;
 import entities.response.ResponseCar;
@@ -17,8 +18,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -31,7 +30,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 /**
  *
@@ -39,14 +37,7 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
  */
 @Stateless
 @Path("cars")
-public class CarFacadeREST extends AbstractFacade<Car> {
-
-    @PersistenceContext(unitName = "com.carrental_CarRentalREST_war_1.0-SNAPSHOTPU")
-    private EntityManager em;
-
-    public CarFacadeREST() {
-        super(Car.class);
-    }
+public class CarREST extends CarFacade {
 
     // <editor-fold desc="GET /cars" defaultstate="collapsed">
     @GET
@@ -68,11 +59,6 @@ public class CarFacadeREST extends AbstractFacade<Car> {
         Response response = Response.status(status).entity(responseCars).build();
 
         return response;
-    }
-
-    @Override
-    public List<Car> findAll() {
-        return super.findAll();
     }
     // </editor-fold>
     // <editor-fold desc="GET /cars/1" defaultstate="collapsed">
@@ -97,11 +83,6 @@ public class CarFacadeREST extends AbstractFacade<Car> {
 
         return response;
     }
-
-    public Car find(Integer id) {
-        return super.find(id);
-    }
-
     // </editor-fold>
     // <editor-fold desc="GET /cars/1/reservations" defaultstate="collapsed">
     @GET
@@ -144,12 +125,6 @@ public class CarFacadeREST extends AbstractFacade<Car> {
 
         return response;
     }
-
-    @Override
-    public void create(Car entity) {
-        super.create(entity);
-    }
-
     // </editor-fold>
     // <editor-fold desc="PUT /cars/1" defaultstate="collapsed">
     @PUT
@@ -172,11 +147,6 @@ public class CarFacadeREST extends AbstractFacade<Car> {
 
         return response;
     }
-
-    public void edit(Car entity) {
-        super.edit(entity);
-    }
-
     // </editor-fold>
     // <editor-fold desc="DELETE /cars/1" defaultstate="collapsed">
     @DELETE
@@ -194,15 +164,6 @@ public class CarFacadeREST extends AbstractFacade<Car> {
 
         return response;
     }
-    
-    public void remove(Integer id) {
-        super.remove(super.find(id));
-    }
     // </editor-fold>
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
 
 }

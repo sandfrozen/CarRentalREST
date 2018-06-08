@@ -29,10 +29,11 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(entities.rest.CarFacadeREST.class);
-        resources.add(entities.rest.CustomerFacadeREST.class);
-        resources.add(entities.rest.EmergencyFacadeREST.class);
-        resources.add(entities.rest.ReservationFacadeREST.class);
+        resources.add(entities.rest.CarREST.class);
+        resources.add(entities.rest.CustomerREST.class);
+        resources.add(entities.rest.EmergencyREST.class);
+        resources.add(entities.rest.ReservationREST.class);
+        resources.add(entities.rest.SessionREST.class);
         resources.add(filters.Logger.class);
     }
     

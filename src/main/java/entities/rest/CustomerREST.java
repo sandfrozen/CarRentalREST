@@ -5,13 +5,12 @@
  */
 package entities.rest;
 
+import entities.facade.*;
 import entities.Customer;
 import entities.Reservation;
 import entities.response.ResponseCustomer;
 import entities.response.ResponseCustomers;
 import entities.response.ResponseReservations;
-import exceptions.AuthException;
-import exceptions.IncorrectFormatException;
 import exceptions.NotFoundException;
 import java.net.URI;
 import java.sql.Timestamp;
@@ -19,8 +18,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -40,14 +37,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Stateless
 @Path("customers")
-public class CustomerFacadeREST extends AbstractFacade<Customer> {
-
-    @PersistenceContext(unitName = "com.carrental_CarRentalREST_war_1.0-SNAPSHOTPU")
-    private EntityManager em;
-
-    public CustomerFacadeREST() {
-        super(Customer.class);
-    }
+public class CustomerREST extends CustomerFacade {
 
     // <editor-fold desc="GET /customers" defaultstate="collapsed">
     @GET
@@ -69,11 +59,6 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
         Response response = Response.status(status).entity(responseCustomers).build();
 
         return response;
-    }
-
-    @Override
-    public List<Customer> findAll() {
-        return super.findAll();
     }
 
     // </editor-fold>
@@ -98,10 +83,6 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
         Response response = Response.status(status).entity(responseCustomer).build();
 
         return response;
-    }
-
-    public Customer find(Integer id) {
-        return super.find(id);
     }
 
     // </editor-fold>  
@@ -148,11 +129,6 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
         return response;
     }
 
-    @Override
-    public void create(Customer entity) {
-        super.create(entity);
-    }
-
     // </editor-fold>
     // <editor-fold desc="PUT /customers/1" defaultstate="collapsed">
     @PUT
@@ -180,10 +156,6 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
         return response;
     }
 
-    public void edit(Customer entity) {
-        super.edit(entity);
-    }
-
     // </editor-fold>
     // <editor-fold desc="DELETE /customers/1" defaultstate="collapsed">
     @DELETE
@@ -201,51 +173,6 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
 
         return response;
     }
-
-    public void remove(Integer id) {
-        super.remove(super.find(id));
-    }
     // </editor-fold>
-
-    @POST
-    @Path("/auth")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response customerAuth(Customer customer) {
-        Response response;
-        try {
-            if (customer.getId() != null
-                    && customer.getMail() != null
-                    && customer.getPassword() != null
-                    && customer.getLoginKey() != null) {
-
-                Customer c = this.find(customer.getId());
-                if (c == null) {
-                    throw new NotFoundException("customer", customer.getId());
-                } else if (c.getLoginKey() != null
-                        && c.getLoginKey().equals(customer.getLoginKey())
-                        && c.getMail().equals(customer.getMail())
-                        && c.getPassword().equals(customer.getPassword())) {
-
-                    response = Response.accepted().build();
-
-                } else {
-                    throw new AuthException("customer");
-                }
-            } else {
-                throw new IncorrectFormatException("id", "mail", "password", "loginKey");
-            }
-
-        } catch (Exception e) {
-            response = Response.status(Response.Status.BAD_REQUEST).build();
-            response.getHeaders().add("error", e.toString());
-        }
-
-        return response;
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
 
 }
