@@ -13,13 +13,13 @@ import java.util.Random;
  */
 public class KeyGenerator {
     
-    private static String POOL = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890";
-    private static int SIZE = POOL.length();
+    private static final String POOL = "QWERTYUIOPASDFGHJKLZXCVBNM1234567890qwertyuiopasdfghjklzxcvbnm-+=";
+    private static final int SIZE = POOL.length();
     
     public static String GenerateKey() {
         int length = 10;
         String key = "";
-        while(key.length() < 10 ) {
+        while(key.length() < length ) {
             Random r = new Random();
             key += POOL.charAt(r.nextInt(SIZE));
         }
