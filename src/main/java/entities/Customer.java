@@ -193,13 +193,14 @@ public class Customer implements Serializable {
         return "entities.Customer[ id=" + id + " ]";
     }
     
-//    public void merge(Customer newc) {
-//        // doesn't modifies id and login_key
-//        this.mail = newc.getMail()!= null ? newc.getMail(): this.mail;
-//        this.name = newc.getName()!= null ? newc.getName(): this.name;
-//        this.surname = newc.getSurname()!= null ? newc.getSurname(): this.surname;
-//        this.password = newc.getPassword()!= null ? newc.getPassword(): this.password;
-//        this.lastUpdate = new Timestamp(System.currentTimeMillis());
-//    }
+    public void merge(Customer newc) {
+        // doesn't modifies id and login_key
+        this.name = newc.getName()!= null ? newc.getName(): this.name;
+        this.surname = newc.getSurname()!= null ? newc.getSurname(): this.surname;
+        this.mail = newc.getMail()!= null ? newc.getMail(): this.mail;
+        this.password = newc.getPassword()!= null ? newc.getPassword(): this.password;
+        this.loginKey = newc.getLoginKey()!= null ? newc.getLoginKey(): this.loginKey;
+        //this.lastUpdate = new Timestamp(System.currentTimeMillis());
+    }
     
 }
