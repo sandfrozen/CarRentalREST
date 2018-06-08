@@ -10,6 +10,8 @@ import entities.Reservation;
 import entities.response.ResponseCustomer;
 import entities.response.ResponseCustomers;
 import entities.response.ResponseReservations;
+import exceptions.AuthException;
+import exceptions.IncorrectFormatException;
 import exceptions.NotFoundException;
 import java.net.URI;
 import java.sql.Timestamp;
@@ -73,6 +75,7 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
     public List<Customer> findAll() {
         return super.findAll();
     }
+
     // </editor-fold>
     // <editor-fold desc="GET /customers/1" defaultstate="collapsed">
     @GET
@@ -108,7 +111,7 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
     @Produces(MediaType.APPLICATION_JSON)
     public Response findReservationsRest(@PathParam("id") Integer id) {
         ResponseReservations response = new ResponseReservations();
-        
+
         Collection<Reservation> reservations = this.find(id).getReservations();
         try {
             response.setList(new ArrayList<Reservation>(reservations));
@@ -124,6 +127,7 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
         Response.Status status = response.getStatus() == "ok" ? Response.Status.OK : Response.Status.NOT_FOUND;
         return Response.status(status).entity(response).build();
     }
+
     // </editor-fold>  
     // <editor-fold desc="POST /customers" defaultstate="collapsed">
     @POST
@@ -157,15 +161,16 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
     public Response editRest(@PathParam("id") Integer id, Customer customer, @Context UriInfo uriInfo) {
         Response response;
         try {
-            customer.setId(id);
-            if(customer.getPassword() == null) {
-                customer.setPassword(this.find(id).getPassword());
+            Customer editableCustomer = this.find(id);
+            if (editableCustomer == null) {
+                throw new NotFoundException("customer", id);
             }
-            customer.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-            
-            this.edit(customer);
+            editableCustomer.merge(customer);
+            editableCustomer.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+
+            this.edit(editableCustomer);
             URI uri = uriInfo.getAbsolutePathBuilder().build();
-            
+
             response = Response.created(uri).build();
         } catch (Exception e) {
             response = Response.status(Response.Status.BAD_REQUEST).build();
@@ -196,15 +201,51 @@ public class CustomerFacadeREST extends AbstractFacade<Customer> {
 
         return response;
     }
-    
+
     public void remove(Integer id) {
         super.remove(super.find(id));
     }
     // </editor-fold>
 
+    @POST
+    @Path("/auth")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response customerAuth(Customer customer) {
+        Response response;
+        try {
+            if (customer.getId() != null
+                    && customer.getMail() != null
+                    && customer.getPassword() != null
+                    && customer.getLoginKey() != null) {
+
+                Customer c = this.find(customer.getId());
+                if (c == null) {
+                    throw new NotFoundException("customer", customer.getId());
+                } else if (c.getLoginKey() != null
+                        && c.getLoginKey().equals(customer.getLoginKey())
+                        && c.getMail().equals(customer.getMail())
+                        && c.getPassword().equals(customer.getPassword())) {
+
+                    response = Response.accepted().build();
+
+                } else {
+                    throw new AuthException("customer");
+                }
+            } else {
+                throw new IncorrectFormatException("id", "mail", "password", "loginKey");
+            }
+
+        } catch (Exception e) {
+            response = Response.status(Response.Status.BAD_REQUEST).build();
+            response.getHeaders().add("error", e.toString());
+        }
+
+        return response;
+    }
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }
