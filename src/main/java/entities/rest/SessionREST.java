@@ -20,7 +20,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import utils.KeyGenerator;
-import utils.SimpleJson;
+import utils.MyJson;
 
 /**
  *
@@ -64,6 +64,8 @@ public class SessionREST extends CustomerFacade {
             response.getHeaders().add("error", e.toString());
         }
 
+        System.out.println("///////AUTH " + customer.getMail());
+        System.out.println("/////////// " + response.getStatus());
         return response;
     }
     // </editor-fold>
@@ -95,8 +97,12 @@ public class SessionREST extends CustomerFacade {
                     String loginKey = KeyGenerator.GenerateKey();
                     founded.setLoginKey(loginKey);
                     this.edit(founded);
+//                    MyJson.CreateJson("loginKey", loginKey)
+                    MyJson json = new MyJson();
+                    json.add("id", founded.getId());
+                    json.add("loginKey", loginKey);
 
-                    response = Response.accepted(SimpleJson.CreateJson("loginKey", loginKey)).build();
+                    response = Response.accepted(json.toString()).build();
 
                 } else {
                     throw new SessionException();
@@ -110,6 +116,8 @@ public class SessionREST extends CustomerFacade {
             response.getHeaders().add("error", e.toString());
         }
 
+        System.out.println("//////LOGIN " + response.getStatus());
+        System.out.println("/////////// " + customer.getMail() + " " + customer.getPassword());
         return response;
     }
     // </editor-fold>
