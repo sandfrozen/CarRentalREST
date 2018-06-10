@@ -11,6 +11,7 @@ import entities.Reservation;
 import entities.response.ResponseCustomer;
 import entities.response.ResponseCustomers;
 import entities.response.ResponseReservations;
+import exceptions.IncorrectValuesException;
 import exceptions.NotFoundException;
 import java.net.URI;
 import java.sql.Timestamp;
@@ -30,6 +31,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import utils.StringUtil;
 
 /**
  *
@@ -116,8 +118,27 @@ public class CustomerREST extends CustomerFacade {
     public Response createRest(Customer customer, @Context UriInfo uriInfo) {
         Response response;
         try {
-            this.create(customer);
+            String mail = customer.getMail().toLowerCase();;
+            if (!StringUtil.IsMailFormat(mail)) {
+                throw new IncorrectValuesException("mail", customer.getMail());
+            }
             List<Customer> customers = this.findAll();
+            Customer founded = null;
+            for (Customer c : customers) {
+                if (c.getMail().equals(mail)) {
+                    founded = c;
+                    break;
+                }
+            }
+
+            if (founded != null) {
+                throw new IncorrectValuesException("mail", mail, "arleady used");
+            }
+            customer.setMail(mail);
+            customer.setName(StringUtil.Capitalize(customer.getName()));
+            customer.setSurname(StringUtil.Capitalize(customer.getSurname()));
+            this.create(customer);
+            customers = this.findAll();
             URI uri = uriInfo.getAbsolutePathBuilder().path(customers.get(customers.size() - 1).getId().toString()).build();
             response = Response.created(uri).build();
 

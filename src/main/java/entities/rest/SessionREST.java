@@ -37,6 +37,7 @@ public class SessionREST extends CustomerFacade {
     public Response customerAuth(Customer customer) {
         Response response;
         try {
+            customer.setMail(customer.getMail().toLowerCase());
             if (customer.getId() != null
                     && customer.getMail() != null
                     && customer.getPassword() != null
@@ -81,7 +82,7 @@ public class SessionREST extends CustomerFacade {
 
                 List<Customer> customers = this.findAll();
                 Customer founded = null;
-
+                customer.setMail(customer.getMail().toLowerCase());
                 for (Customer c : customers) {
                     if (c.getMail().equals(customer.getMail())) {
                         founded = c;
