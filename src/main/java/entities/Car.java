@@ -6,7 +6,6 @@
 package entities;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -25,7 +24,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -76,6 +74,28 @@ public class Car implements Serializable {
     @NotNull
     @Column(name = "DOORS")
     private int doors;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "BOOT")
+    private int boot;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "YEARPROD")
+    private int yearprod;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "DRIVE")
+    private String drive;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "COLOR")
+    private String color;
     
     @Basic(optional = false)
     @NotNull
@@ -130,11 +150,15 @@ public class Car implements Serializable {
         this.id = id;
     }
 
-    public Car(Integer id, String brand, String model, int doors, int fuelcap, String fueltype, int range, String gearbox, int gears, double daycost) {
+    public Car(Integer id, String brand, String model, int doors, int boot, int yearprod, String drive, String color, int fuelcap, String fueltype, int range, String gearbox, int gears, double daycost) {
         this.id = id;
         this.brand = brand;
         this.model = model;
         this.doors = doors;
+        this.boot = boot;
+        this.yearprod = yearprod;
+        this.drive = drive;
+        this.color = color;
         this.fuelcap = fuelcap;
         this.fueltype = fueltype;
         this.range = range;
@@ -173,6 +197,22 @@ public class Car implements Serializable {
 
     public void setDoors(int doors) {
         this.doors = doors;
+    }
+
+    public int getBoot() {
+        return boot;
+    }
+
+    public void setBoot(int boot) {
+        this.boot = boot;
+    }
+
+    public String getDrive() {
+        return drive;
+    }
+
+    public void setDrive(String drive) {
+        this.drive = drive;
     }
 
     public int getFuelcap() {
@@ -292,4 +332,20 @@ public class Car implements Serializable {
 //        this.gearbox = newc.fueltype != null ? newc.fueltype : this.fueltype;
 //        this.lastUpdate = new Timestamp(System.currentTimeMillis());
 //    }
+
+    public int getYearprod() {
+        return yearprod;
+    }
+
+    public void setYearprod(int yearprod) {
+        this.yearprod = yearprod;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 }

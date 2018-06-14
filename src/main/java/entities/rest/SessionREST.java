@@ -82,6 +82,7 @@ public class SessionREST extends CustomerFacade {
 
                 List<Customer> customers = this.findAll();
                 Customer founded = null;
+                
                 customer.setMail(customer.getMail().toLowerCase());
                 for (Customer c : customers) {
                     if (c.getMail().equals(customer.getMail())) {

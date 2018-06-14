@@ -45,10 +45,11 @@ public class CarREST extends CarFacade {
     public Response findAllRest() {
         ResponseCars responseCars = new ResponseCars();
         try {
-            responseCars.setList(this.findAll());
+            responseCars.setList(this.findAll());           
             if (responseCars.getList() == null) {
                 throw new NotFoundException("cars");
             }
+            //throw new NotFoundException("cars");
         } catch (Exception e) {
             responseCars.setList(null);
             responseCars.setStatus("error");
