@@ -74,7 +74,7 @@ public class CustomerREST extends CustomerFacade {
         try {
             responseCustomer.setCustomer(this.find(id));
             if (responseCustomer.getCustomer() == null) {
-                throw new NotFoundException("customer");
+                throw new NotFoundException("customer", id);
             }
         } catch (Exception e) {
             responseCustomer.setCustomer(null);
@@ -92,12 +92,20 @@ public class CustomerREST extends CustomerFacade {
     @GET
     @Path("{id}/reservations")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findReservationsRest(@PathParam("id") Integer id) {
+    public Response findCustomerReservationsRest(@PathParam("id") Integer id) {
         ResponseReservations response = new ResponseReservations();
-
-        Collection<Reservation> reservations = this.find(id).getReservations();
         try {
-            response.setList(new ArrayList<Reservation>(reservations));
+            ReservationFacade reservationFacade = ReservationFacade.getInstance();
+            List<Reservation> allReservations = reservationFacade.findAll();
+            List<Reservation> customerReservations = new ArrayList<>();
+
+            for (Reservation r : allReservations) {
+                if (r.getCustomer().getId().equals(id)) {
+                    customerReservations.add(r);
+                }
+            }
+
+            response.setList(customerReservations);
             if (response.getList() == null) {
                 throw new NotFoundException("customer", id);
             }

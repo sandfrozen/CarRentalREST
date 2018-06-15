@@ -19,8 +19,18 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
     @PersistenceContext(unitName = "com.carrental_CarRentalREST_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
+    private static ReservationFacade instance;
+
+    public static ReservationFacade getInstance() {
+        if ( instance == null ) {
+            instance = new ReservationFacade();
+        }
+        return instance;
+    }
+
     public ReservationFacade() {
         super(Reservation.class);
+        instance = this;
     }
 
     @Override

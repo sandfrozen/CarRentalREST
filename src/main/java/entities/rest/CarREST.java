@@ -45,7 +45,7 @@ public class CarREST extends CarFacade {
     public Response findAllRest() {
         ResponseCars responseCars = new ResponseCars();
         try {
-            responseCars.setList(this.findAll());           
+            responseCars.setList(this.findAll());
             if (responseCars.getList() == null) {
                 throw new NotFoundException("cars");
             }
@@ -61,6 +61,7 @@ public class CarREST extends CarFacade {
 
         return response;
     }
+
     // </editor-fold>
     // <editor-fold desc="GET /cars/1" defaultstate="collapsed">
     @GET
@@ -84,17 +85,26 @@ public class CarREST extends CarFacade {
 
         return response;
     }
+
     // </editor-fold>
     // <editor-fold desc="GET /cars/1/reservations" defaultstate="collapsed">
     @GET
     @Path("{id}/reservations")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findReservationsRest(@PathParam("id") Integer id) {
+    public Response findCarReservationsRest(@PathParam("id") Integer id) {
         ResponseReservations response = new ResponseReservations();
-        
-        Collection<Reservation> reservations = this.find(id).getReservations();
         try {
-            response.setList(new ArrayList<Reservation>(reservations));
+            ReservationFacade reservationFacade = ReservationFacade.getInstance();
+            List<Reservation> allReservations = reservationFacade.findAll();
+            List<Reservation> carReservations = new ArrayList<>();
+
+            for (Reservation r : allReservations) {
+                if (r.getCar().getId().equals(id)) {
+                    carReservations.add(r);
+                }
+            }
+
+            response.setList(carReservations);
             if (response.getList() == null) {
                 throw new NotFoundException("car", id);
             }
@@ -107,6 +117,7 @@ public class CarREST extends CarFacade {
         Response.Status status = response.getStatus() == "ok" ? Response.Status.OK : Response.Status.NOT_FOUND;
         return Response.status(status).entity(response).build();
     }
+
     // </editor-fold>
     // <editor-fold desc="POST /cars" defaultstate="collapsed">
     @POST
@@ -126,6 +137,7 @@ public class CarREST extends CarFacade {
 
         return response;
     }
+
     // </editor-fold>
     // <editor-fold desc="PUT /cars/1" defaultstate="collapsed">
     @PUT
@@ -136,10 +148,10 @@ public class CarREST extends CarFacade {
         try {
             car.setId(id);
             car.setLastUpdate(new Timestamp(System.currentTimeMillis()));
-            
+
             this.edit(car);
             URI uri = uriInfo.getAbsolutePathBuilder().build();
-            
+
             response = Response.created(uri).build();
         } catch (Exception e) {
             response = Response.status(Response.Status.BAD_REQUEST).build();
@@ -148,6 +160,7 @@ public class CarREST extends CarFacade {
 
         return response;
     }
+
     // </editor-fold>
     // <editor-fold desc="DELETE /cars/1" defaultstate="collapsed">
     @DELETE
