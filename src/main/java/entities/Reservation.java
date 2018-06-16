@@ -23,14 +23,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 
 /**
  *
@@ -48,40 +44,40 @@ import javax.xml.bind.annotation.XmlType;
 public class Reservation implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "FROM_DATE")
     @Temporal(TemporalType.DATE)
     private Date fromDate;
-    
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "TO_DATE")
     @Temporal(TemporalType.DATE)
     private Date toDate;
-    
+
     @Column(name = "LAST_UPDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "reservation")
     private Collection<Emergency> emergencies;
-    
+
     @JoinColumn(name = "CAR_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    @XmlElement(name="car")
+    @XmlElement(name = "car")
     private Car car;
-    
+
     @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    @XmlElement(name="customer")
+    @XmlElement(name = "customer")
     private Customer customer;
 
     public Reservation() {
@@ -128,7 +124,7 @@ public class Reservation implements Serializable {
     public void setLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
-    
+
     @XmlTransient
     public Collection<Emergency> getEmergencies() {
         return emergencies;

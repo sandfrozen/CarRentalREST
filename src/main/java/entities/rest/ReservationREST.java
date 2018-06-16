@@ -40,7 +40,7 @@ import javax.ws.rs.core.UriInfo;
 @Stateless
 @Path("reservations")
 public class ReservationREST extends ReservationFacade {
-
+    
     // <editor-fold desc="GET /reservations" defaultstate="collapsed">
     @GET
     @Produces(MediaType.APPLICATION_JSON)

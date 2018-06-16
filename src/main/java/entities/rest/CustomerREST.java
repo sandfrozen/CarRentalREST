@@ -15,8 +15,11 @@ import exceptions.IncorrectValuesException;
 import exceptions.NotFoundException;
 import java.net.URI;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
@@ -120,6 +123,108 @@ public class CustomerREST extends CustomerFacade {
     }
 
     // </editor-fold>  
+    // <editor-fold desc="GET /customers/1/reservations/past" defaultstate="collapsed">
+    @GET
+    @Path("{id}/reservations/past")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findCustomerReservationsOldRest(@PathParam("id") Integer id) {
+        ResponseReservations response = new ResponseReservations();
+        try {
+            ReservationFacade reservationFacade = ReservationFacade.getInstance();
+            List<Reservation> allReservations = reservationFacade.findAll();
+            List<Reservation> customerReservations = new ArrayList<>();
+            Date now = new Date();
+            for (Reservation r : allReservations) {
+                if (r.getCustomer().getId().equals(id) && r.getToDate().before(now)) {
+                    customerReservations.add(r);
+                }
+            }
+
+            response.setList(customerReservations);
+            if (response.getList() == null) {
+                throw new NotFoundException("customer", id);
+            }
+        } catch (Exception e) {
+            response.setList(null);
+            response.setStatus("error");
+            response.setErrorMessage(e.toString());
+        }
+
+        Response.Status status = response.getStatus() == "ok" ? Response.Status.OK : Response.Status.NOT_FOUND;
+        return Response.status(status).entity(response).build();
+    }
+
+    // </editor-fold>
+    // <editor-fold desc="GET /customers/1/reservations/actual" defaultstate="collapsed">
+    @GET
+    @Path("{id}/reservations/actual")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findCustomerReservationsActualRest(@PathParam("id") Integer id) {
+        ResponseReservations response = new ResponseReservations();
+        try {
+            ReservationFacade reservationFacade = ReservationFacade.getInstance();
+            List<Reservation> allReservations = reservationFacade.findAll();
+            List<Reservation> customerReservations = new ArrayList<>();
+
+            Date now = new Date();
+            System.out.println("NOW ------- " + now);
+            for (Reservation r : allReservations) {
+                Date from = r.getFromDate();
+                Date to = r.getToDate();
+
+                if (r.getCustomer().getId().equals(id) && !from.after(now) && !to.before(now)) {
+                    customerReservations.add(r);
+                }
+            }
+
+            response.setList(customerReservations);
+            if (response.getList() == null) {
+                throw new NotFoundException("customer", id);
+            }
+        } catch (Exception e) {
+            response.setList(null);
+            response.setStatus("error");
+            response.setErrorMessage(e.toString());
+        }
+
+        Response.Status status = response.getStatus() == "ok" ? Response.Status.OK : Response.Status.NOT_FOUND;
+        return Response.status(status).entity(response).build();
+    }
+
+    // </editor-fold>
+    // <editor-fold desc="GET /customers/1/reservations/future" defaultstate="collapsed">
+    @GET
+    @Path("{id}/reservations/future")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findCustomerReservationsFutureRest(@PathParam("id") Integer id) {
+        ResponseReservations response = new ResponseReservations();
+        try {
+            ReservationFacade reservationFacade = ReservationFacade.getInstance();
+            List<Reservation> allReservations = reservationFacade.findAll();
+            List<Reservation> customerReservations = new ArrayList<>();
+
+            Date now = new Date();
+            for (Reservation r : allReservations) {
+                if (r.getCustomer().getId().equals(id) && r.getFromDate().after(now)) {
+                    customerReservations.add(r);
+                }
+            }
+
+            response.setList(customerReservations);
+            if (response.getList() == null) {
+                throw new NotFoundException("customer", id);
+            }
+        } catch (Exception e) {
+            response.setList(null);
+            response.setStatus("error");
+            response.setErrorMessage(e.toString());
+        }
+
+        Response.Status status = response.getStatus() == "ok" ? Response.Status.OK : Response.Status.NOT_FOUND;
+        return Response.status(status).entity(response).build();
+    }
+
+    // </editor-fold> 
     // <editor-fold desc="POST /customers" defaultstate="collapsed">
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
