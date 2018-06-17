@@ -54,13 +54,13 @@ public class Reservation implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "FROM_DATE")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fromDate;
 
     @Basic(optional = false)
     @NotNull
     @Column(name = "TO_DATE")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date toDate;
 
     @Column(name = "LAST_UPDATE")
