@@ -14,8 +14,10 @@ import entities.response.ResponseReservations;
 import exceptions.NotFoundException;
 import java.net.URI;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -64,7 +66,9 @@ public class CarREST extends CarFacade {
             @QueryParam("gearsMin") int gearsMin,
             @QueryParam("gearsMax") int gearsMax,
             @QueryParam("dayCostMin") double dayCostMin,
-            @QueryParam("dayCostMax") double dayCostMax) {
+            @QueryParam("dayCostMax") double dayCostMax,
+            @QueryParam("fromDate") String fromDate,
+            @QueryParam("toDate") String toDate) {
         ResponseCars responseCars = new ResponseCars();
         try {
             List<Car> allCars = this.findAll();
@@ -250,6 +254,29 @@ public class CarREST extends CarFacade {
                     }
                 }
                 allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (fromDate != null && toDate != null &&!allCars.isEmpty()) {
+                String fromString = fromDate + "T06:00:00.000+02:00";
+                String toString = toDate + "T22:00:00.000+02:00";
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+                Date searchedFromDate = sdf.parse(fromString);
+                Date searchedToDate = sdf.parse(toString);
+
+                ReservationFacade reservationFacade = ReservationFacade.getInstance();
+                List<Reservation> allReservations = reservationFacade.findAll();
+
+                for (Reservation r : allReservations) {
+                    if( r.getToDate().before(searchedFromDate) || searchedToDate.before(r.getFromDate()) ) {
+                        if( allCars.contains(r.getCar()) ) {
+                            // it's ok
+                        }
+                    } else {
+                        if( allCars.contains(r.getCar()) ) {
+                            allCars.remove(r.getCar());
+                        }
+                    }
+                }
             }
 
             responseCars.setList(allCars);
