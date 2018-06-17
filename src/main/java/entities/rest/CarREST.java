@@ -16,6 +16,7 @@ import java.net.URI;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
@@ -26,6 +27,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -40,12 +42,217 @@ import javax.ws.rs.core.UriInfo;
 public class CarREST extends CarFacade {
 
     // <editor-fold desc="GET /cars" defaultstate="collapsed">
+    // brand=Volvo&model=V40&color=white&gearbox=A&fuelType=D&drive=2x4&yearMin=2010&yearMax=2018&fuelCapMin=20&fuelCapMax=20&bootMin=60&bootMax=60&rangeMin=350&rangeMax=350&doorsMin=4&doorsMax=4&gearsMin=5&gearsMax=5&dayCostMin=29.99&dayCostMax=44.90
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findAllRest() {
+    public Response findAllRest(@QueryParam("brand") String brand,
+            @QueryParam("model") String model,
+            @QueryParam("color") String color,
+            @QueryParam("gearbox") String gearbox,
+            @QueryParam("fuelType") String fuelType,
+            @QueryParam("drive") String drive,
+            @QueryParam("yearMin") int yearMin,
+            @QueryParam("yearMax") int yearMax,
+            @QueryParam("fuelCapMin") int fuelCapMin,
+            @QueryParam("fuelCapMax") int fuelCapMax,
+            @QueryParam("bootMin") int bootMin,
+            @QueryParam("bootMax") int bootMax,
+            @QueryParam("rangeMin") int rangeMin,
+            @QueryParam("rangeMax") int rangeMax,
+            @QueryParam("doorsMin") int doorsMin,
+            @QueryParam("doorsMax") int doorsMax,
+            @QueryParam("gearsMin") int gearsMin,
+            @QueryParam("gearsMax") int gearsMax,
+            @QueryParam("dayCostMin") double dayCostMin,
+            @QueryParam("dayCostMax") double dayCostMax) {
         ResponseCars responseCars = new ResponseCars();
         try {
-            responseCars.setList(this.findAll());
+            List<Car> allCars = this.findAll();
+            if (allCars == null) {
+                throw new NotFoundException("cars");
+            }
+            List<Car> fileredList = new LinkedList<>();
+            if (brand != null) {
+                for (Car c : allCars) {
+                    if (c.getBrand().equals(brand)) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (model != null) {
+                for (Car c : allCars) {
+                    if (c.getModel().equals(model)) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (color != null) {
+                for (Car c : allCars) {
+                    if (c.getColor().equals(color)) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (gearbox != null) {
+                for (Car c : allCars) {
+                    if (c.getGearbox().equals(gearbox)) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (fuelType != null) {
+                for (Car c : allCars) {
+                    if (c.getFueltype().equals(fuelType)) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (drive != null) {
+                for (Car c : allCars) {
+                    if (c.getDrive().equals(drive)) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (yearMin > 0) {
+                for (Car c : allCars) {
+                    if (c.getYearprod() >= yearMin) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (yearMax > 0) {
+                for (Car c : allCars) {
+                    if (c.getYearprod() <= yearMax) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (fuelCapMin > 0) {
+                for (Car c : allCars) {
+                    if (c.getFuelcap() >= fuelCapMin) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (fuelCapMax > 0) {
+                for (Car c : allCars) {
+                    if (c.getFuelcap() <= fuelCapMax) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (bootMin > 0) {
+                for (Car c : allCars) {
+                    if (c.getBoot() >= bootMin) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (bootMax > 0) {
+                for (Car c : allCars) {
+                    if (c.getBoot() <= bootMax) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (rangeMin > 0) {
+                for (Car c : allCars) {
+                    if (c.getRange() >= rangeMin) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (rangeMax > 0) {
+                for (Car c : allCars) {
+                    if (c.getRange() <= rangeMax) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (doorsMin > 0) {
+                for (Car c : allCars) {
+                    if (c.getRange() >= doorsMin) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (doorsMax > 0) {
+                for (Car c : allCars) {
+                    if (c.getDoors() <= doorsMax) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (gearsMin > 0) {
+                for (Car c : allCars) {
+                    if (c.getGears() >= gearsMin) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (gearsMax > 0) {
+                for (Car c : allCars) {
+                    if (c.getGears() <= gearsMax) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (dayCostMin > 0) {
+                for (Car c : allCars) {
+                    if (c.getDaycost() >= dayCostMin) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+                fileredList = new LinkedList<>();
+            }
+            if (dayCostMax > 0) {
+                for (Car c : allCars) {
+                    if (c.getDaycost() <= dayCostMax) {
+                        fileredList.add(c);
+                    }
+                }
+                allCars = fileredList;
+            }
+
+            responseCars.setList(allCars);
             if (responseCars.getList() == null) {
                 throw new NotFoundException("cars");
             }
