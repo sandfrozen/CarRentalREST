@@ -71,14 +71,40 @@ public class CustomerREST extends CustomerFacade {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findRest(@PathParam("id") Integer id) {
+    public Response findRest(@PathParam("id") Integer id, @Context UriInfo uriInfo) {
         ResponseCustomer responseCustomer = new ResponseCustomer();
 
         try {
-            responseCustomer.setCustomer(this.find(id));
+            Customer c = this.find(id);
+            if (c == null) {
+                throw new NotFoundException("customer", id);
+            }
+
+            String self = uriInfo.getBaseUriBuilder()
+                    .path(CustomerREST.class)
+                    .path(String.valueOf(c.getId()))
+                    .build().toString();
+            c.addLink("self", self);
+            
+            String ress = uriInfo.getBaseUriBuilder()
+                    .path(CustomerREST.class)
+                    .path(String.valueOf(c.getId()))
+                    .path(ReservationREST.class)
+                    .build().toString();
+            c.addLink("reservations", ress);
+
+//            String comments = uriInfo.getBaseUriBuilder()
+//                    .path(MessageResource.class)
+//                    .path(MessageResource.class, "getComments")
+//                    .resolveTemplate("messageId", message.getId())
+//                    .build().toString();
+//            c.addLink("comments", comments);
+            
+            responseCustomer.setCustomer(c);
             if (responseCustomer.getCustomer() == null) {
                 throw new NotFoundException("customer", id);
             }
+
         } catch (Exception e) {
             responseCustomer.setCustomer(null);
             responseCustomer.setStatus("error");

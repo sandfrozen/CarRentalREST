@@ -6,8 +6,10 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -49,6 +52,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Car.findByImageurl", query = "SELECT c FROM Car c WHERE c.imageurl = :imageurl")
     , @NamedQuery(name = "Car.findByLastUpdate", query = "SELECT c FROM Car c WHERE c.lastUpdate = :lastUpdate")})
 public class Car implements Serializable {
+    
+    @Transient
+    private List<Link> links = new ArrayList<>();
 
     private static final long serialVersionUID = 1L;
     
@@ -347,5 +353,23 @@ public class Car implements Serializable {
 
     public void setColor(String color) {
         this.color = color;
+    }
+    
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<Link> links) {
+        this.links = links;
+    }
+
+    public void addLink(String rel, String link) {
+        Link newLink = new Link(rel, link);
+        for (Link l : links) {
+            if (l.getRel() == rel) {
+                return;
+            }
+        }
+        links.add(newLink);
     }
 }

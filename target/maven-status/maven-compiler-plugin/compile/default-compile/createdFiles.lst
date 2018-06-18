@@ -9,6 +9,7 @@ exceptions\SessionException$ExceptionType.class
 entities\Emergency_.class
 entities\facade\AbstractFacade.class
 entities\facade\CustomerFacade.class
+entities\Link.class
 utils\MyJson.class
 exceptions\IncorrectValuesException.class
 entities\Car.class

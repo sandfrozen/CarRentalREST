@@ -301,14 +301,33 @@ public class CarREST extends CarFacade {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findRest(@PathParam("id") Integer id) {
+    public Response findRest(@PathParam("id") Integer id, @Context UriInfo uriInfo) {
         ResponseCar responseCar = new ResponseCar();
 
         try {
-            responseCar.setCar(this.find(id));
-            if (responseCar.getCar() == null) {
+            Car c = this.find(id);
+            if (c == null) {
                 throw new NotFoundException("car", id);
             }
+
+            String self = uriInfo.getBaseUriBuilder()
+                    .path(CarREST.class)
+                    .path(String.valueOf(c.getId()))
+                    .build().toString();
+            c.addLink("self", self);
+            
+            String ress = uriInfo.getBaseUriBuilder()
+                    .path(CarREST.class)
+                    .path(String.valueOf(c.getId()))
+                    .path(ReservationREST.class)
+                    .build().toString();
+            c.addLink("reservations", ress);
+            
+            responseCar.setCar(c);
+            if (responseCar.getCar()== null) {
+                throw new NotFoundException("car", id);
+            }
+
         } catch (Exception e) {
             responseCar.setCar(null);
             responseCar.setStatus("error");

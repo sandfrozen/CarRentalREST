@@ -69,3 +69,6 @@ insert into car(brand, model, doors, yearprod, boot, drive, color, fuelcap, fuel
 
 select * from customer;
 select * from car;
+
+
+-- insert into emergency(reservation_id, lat, lon, message ) values (1, 52.123, 23.123, 'test');
