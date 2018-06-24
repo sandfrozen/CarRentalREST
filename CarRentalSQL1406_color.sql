@@ -66,6 +66,11 @@ insert into car(brand, model, doors, yearprod, boot, drive, color, fuelcap, fuel
         values ('BMW', 'X7', 4, 2018, 80, '4X4', 'white', 56, 'b', 590, 'A', 6, 65.90, 'https://www.bmw-dobrzanski.pl/www/media/mediapool/newcar/X/bmw-x1/BMW-X1_ModelCard.png');
 insert into car(brand, model, doors, yearprod, boot, drive, color, fuelcap, fueltype, range, gearbox, gears, daycost, imageUrl)
         values ('Daevoo', 'Matiz', 5, 2010, 20, '2X4', 'blue', 30, 'b', 300, 'M', 5, 29.99, 'https://www.autocentrum.pl/ac-file/gallery-photo/589489c6592c7d49138bc1ef/daewoo-matiz-02.jpg');
+insert into car(brand, model, doors, yearprod, boot, drive, color, fuelcap, fueltype, range, gearbox, gears, daycost, imageUrl)
+        values ('Volksvagen', 'Passat', 5, 2014, 20, '2X4', 'white', 30, 'b', 300, 'M', 5, 39.99, 'https://auto.ndtvimg.com/car-images/big/volkswagen/passat/volkswagen-passat.jpg?v=18');
+insert into car(brand, model, doors, yearprod, boot, drive, color, fuelcap, fueltype, range, gearbox, gears, daycost, imageUrl)
+        values ('Fiat', 'Siena', 5, 2012, 20, '2X4', 'red', 30, 'b', 300, 'M', 5, 42.99, 'https://s-trojmiasto.pl//zdj/moto/modele/300/z325.jpg');
+
 
 select * from customer;
 select * from car;
